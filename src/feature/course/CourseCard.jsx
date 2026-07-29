@@ -1,7 +1,7 @@
-export default function CourseCard({ mock }) {
+export default function CourseCard({course}) {
     return (
         <tbody>
-            {mock.map((c) => {
+            {course.map((c) => {
                 return (
                     <tr key={c.id}>
                         <td>{c.title}</td>
