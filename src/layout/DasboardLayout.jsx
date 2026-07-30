@@ -1,6 +1,7 @@
 import Header from "../component/Header";
 import Sidebar from "../component/Sidebar";
 import Content from "../component/Content";
+import CourseFormCreate from "../feature/course/CourseFormCreate";
 export default function Layout({children}){
     return(
         <div>
@@ -11,6 +12,7 @@ export default function Layout({children}){
                     {children}
                 </Content>
             </div>
+            <CourseFormCreate />
             
         </div>
     )
