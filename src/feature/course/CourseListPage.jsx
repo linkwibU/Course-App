@@ -8,6 +8,11 @@ export default function CourseListPage() {
     function handleCourseCreated(newCourse) {
         setCourse(prev => [newCourse, ...prev]);
     }
+    function handleCourseUpdated(updatedCourse) {
+        setCourse(prev =>
+            prev.map(c => (c.id === updatedCourse.id ? updatedCourse : c))
+        );
+    }
     function dieuKien() {
         if (loading) {
             return <p>Đang load...</p>
@@ -46,8 +51,8 @@ export default function CourseListPage() {
             setCourse(courseData);
             setLoading(false);
         }
-        catch (err) {
-            setError(err.message)
+        catch (error) {
+            setError(error)
             setLoading(false);
         }
 
@@ -69,7 +74,7 @@ export default function CourseListPage() {
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
-                <CourseList course={course} />
+                <CourseList  course={course} />
             </table>
             <CourseFormCreate handleCourseCreated={handleCourseCreated} />
         </div>

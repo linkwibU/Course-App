@@ -53,7 +53,7 @@ export default function CourseFormCreate({ handleCourseCreated }) {
             
         }
         catch (err) {
-            console.log(err.message);
+            console.error(err.message);
             
             setError("Vui lòng thử lại");
         }
