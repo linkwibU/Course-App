@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react"
 import CourseList from "./CourseList"
+import CourseFormCreate from "./CourseFormCreate";
 export default function CourseListPage() {
     const [course, setCourse] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
+    function handleCourseCreated(newCourse) {
+        setCourse(prev => [newCourse, ...prev]);
+    }
     function dieuKien() {
         if (loading) {
             return <p>Đang load...</p>
@@ -18,8 +21,8 @@ export default function CourseListPage() {
 
             )
         }
-        else if(course.length === 0){
-            return(
+        else if (course.length === 0) {
+            return (
                 <p>Hiện tại chưa có khoá học</p>
             )
         }
@@ -68,7 +71,7 @@ export default function CourseListPage() {
                 </thead>
                 <CourseList course={course} />
             </table>
-
+            <CourseFormCreate handleCourseCreated={handleCourseCreated} />
         </div>
 
     )

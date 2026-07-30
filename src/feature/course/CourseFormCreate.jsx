@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function CourseFormCreate() {
+export default function CourseFormCreate({handleCourseCreated}) {
     const [formData, setFormData] = useState({
         title: "",
         category: "",
@@ -42,6 +42,7 @@ export default function CourseFormCreate() {
             }
             console.log("data khoa hoc: ", data);
             const courseData = await data.json();
+            handleCourseCreated(courseData);
             setFormData({
                 title: "",
                 category: "",
