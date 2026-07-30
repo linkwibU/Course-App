@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function CourseFormCreate({handleCourseCreated}) {
+export default function CourseFormCreate({ handleCourseCreated }) {
     const [formData, setFormData] = useState({
         title: "",
         category: "",
@@ -50,11 +50,17 @@ export default function CourseFormCreate({handleCourseCreated}) {
                 price: '',
                 status: ""
             });
+            
         }
         catch (err) {
             console.log(err.message);
+            
+            setError("Vui lòng thử lại");
+        }
+        finally{
             setIsSubmitting(false);
         }
+
 
     }
     function validateForm() {
@@ -76,6 +82,7 @@ export default function CourseFormCreate({handleCourseCreated}) {
     }
     return (
         <section style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {error && <p>{error}</p>}
             <h1
                 style={{ fontSize: '2rem' }}
             >Add NewCourse</h1>
@@ -159,10 +166,12 @@ export default function CourseFormCreate({handleCourseCreated}) {
                 <option value="archived">Archived</option>
             </select>
             <div style={{ display: 'flex', gap: '1em' }}>
-                <button type="submit" onClick={handleSubmit}>Save</button>
+                <button type="submit" disabled={isSubmitting} onClick={handleSubmit}>
+                    {isSubmitting ? "Saving..." : "Save"}
+                </button>
                 <button>Cancel</button>
             </div>
-            {isSubmitting && <p style={{ color: '#A56F63' }}>Thành công tạo khoá học mới</p>}
+            
         </section>
 
     )
