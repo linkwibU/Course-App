@@ -3,10 +3,9 @@ import CourseList from "./CourseList"
 import CourseFormCreate from "./CourseFormCreate";
 import search from "../../assets/search.svg";
 import { categories, level } from "./coursesMock";
+import useCourse from "../../hooks/useCourse";
 export default function CourseListPage() {
-    const [course, setCourse] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const { course, loading, error, fetchCourse, setCourse } = useCourse()
     const [searchText, setSearchText] = useState("");
     const [filterCategory, setFilterCategory] = useState("All Category");
     const [filterLevel, setFilterLevel] = useState("All Level");
@@ -90,29 +89,7 @@ export default function CourseListPage() {
         return null;
 
     }
-    async function fetchCourse() {
-        try {
-            setLoading(true);
-            const data = await fetch("https://course365-api.onschoolbootcamp.edu.vn/courses", {
-                method: "GET",
 
-            })
-
-            if (!data.ok) {
-                throw new Error("Server Error");
-            }
-            const courseData = await data.json();
-
-            console.log(courseData);
-            setCourse(courseData);
-            setLoading(false);
-        }
-        catch (error) {
-            setError(error)
-            setLoading(false);
-        }
-
-    }
 
     return (
         <div>

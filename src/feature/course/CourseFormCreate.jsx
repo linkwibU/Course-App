@@ -1,6 +1,6 @@
 import { useState } from "react";
-
-export default function CourseFormCreate({ handleCourseCreated }) {
+import useCourse from "../../hooks/useCourse";
+export default function CourseFormCreate() {
     const [formData, setFormData] = useState({
         title: "",
         category: "",
@@ -8,60 +8,65 @@ export default function CourseFormCreate({ handleCourseCreated }) {
         price: '',
         status: ""
     })
+    const {createCourse, isSubmitting} = useCourse()
     const [errorName, setErrorName] = useState(null);
     const [errorPrice, setErrorPrice] = useState(null);
     const [error, setError] = useState(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    // const [isSubmitting, setIsSubmitting] = useState(false);
     function handleChange(field, value) {
         setFormData(prev => ({
             ...prev, [field]: value
         }))
-        setIsSubmitting(false);
     }
     async function handleSubmit(e) {
         e.preventDefault(); // tránh reload trang
         if (!validateForm()) return; // dừng lại nếu có lỗi
         console.log("Dữ liệu hợp lệ, gửi lên API:", formData);
 
-        try {
-            setIsSubmitting(true);
-            const data = await fetch("https://course365-api.onschoolbootcamp.edu.vn/courses", {
-                method: "POST",
+        // try {
+        //     setIsSubmitting(true);
+        //     const data = await fetch("https://course365-api.onschoolbootcamp.edu.vn/courses", {
+        //         method: "POST",
 
-                headers: {
+        //         headers: {
 
-                    "Content-Type": "application/json"
+        //             "Content-Type": "application/json"
 
-                },
-                body: JSON.stringify(formData)
-            })
-            if (!data.ok) {
-                const errBody = await data.json().catch(() => null);
-                console.log("Chi tiết lỗi từ server:", errBody);
-                throw new Error(errBody?.message || "Server Error");
-            }
-            console.log("data khoa hoc: ", data);
-            const courseData = await data.json();
-            handleCourseCreated(courseData);
-            setFormData({
-                title: "",
-                category: "",
-                level: "",
-                price: '',
-                status: ""
-            });
+        //         },
+        //         body: JSON.stringify(formData)
+        //     })
+        //     if (!data.ok) {
+        //         const errBody = await data.json().catch(() => null);
+        //         console.log("Chi tiết lỗi từ server:", errBody);
+        //         throw new Error(errBody?.message || "Server Error");
+        //     }
+        //     console.log("data khoa hoc: ", data);
+        //     const courseData = await data.json();
+        //     handleCourseCreated(courseData);
+        //     setFormData({
+        //         title: "",
+        //         category: "",
+        //         level: "",
+        //         price: '',
+        //         status: ""
+        //     });
+
+        // }
+        // catch (err) {
+        //     console.error(err.message);
+
+        //     setError("Vui lòng thử lại");
+        // }
+        // finally{
+        //     setIsSubmitting(false);
+        // }
+        const result = await createCourse(formData);
+        if (result.success) {
+            setFormData({ title: "", category: "", level: "", price: '', status: "" });
+        } else {
+            setError(result.error);
             
         }
-        catch (err) {
-            console.error(err.message);
-            
-            setError("Vui lòng thử lại");
-        }
-        finally{
-            setIsSubmitting(false);
-        }
-
-
     }
     function validateForm() {
         let isValid = true;
@@ -163,7 +168,6 @@ export default function CourseFormCreate({ handleCourseCreated }) {
                 <option value="">chọn trạng thái</option>
                 <option value="published">Publish</option>
                 <option value="draft">Draft</option>
-                <option value="archived">Archived</option>
             </select>
             <div style={{ display: 'flex', gap: '1em' }}>
                 <button type="submit" disabled={isSubmitting} onClick={handleSubmit}>
@@ -171,7 +175,7 @@ export default function CourseFormCreate({ handleCourseCreated }) {
                 </button>
                 <button>Cancel</button>
             </div>
-            
+
         </section>
 
     )
