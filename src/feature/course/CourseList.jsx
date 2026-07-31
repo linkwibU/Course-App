@@ -1,6 +1,6 @@
 import CourseCard from "./CourseCard"
-export default function CourseList({ mock }) {
+export default function CourseList({ course, handleCourseUpdated}) {
     return (
-        <CourseCard mock={mock}/>
-    )
+       <CourseCard course={course}  />
+        )
 }
