@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
-
+import useCourse from "../../hooks/useCourse";
 export default function CourseFormEdit({ course, onClose }) {
-    const [loading, setLoading] = useState(true);
+    const { isSubmitting, fetchCourseId, error, loading, edit, saving, setSaving } = useCourse();
+
     const [errorName, setErrorName] = useState(null);
     const [errorPrice, setErrorPrice] = useState(null);
-    const [saving, setSaving] = useState(false);
-    const [error, setError] = useState(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const [formData, setFormData] = useState({
         title: "",
         category: "",
@@ -21,44 +20,9 @@ export default function CourseFormEdit({ course, onClose }) {
         setFormData(prev => ({
             ...prev, [field]: value
         }))
-        setIsSubmitting(false);
+
     }
-    async function fetchCourseId() {
 
-        try {
-            setIsSubmitting(true);
-            const data = await fetch("https://course365-api.onschoolbootcamp.edu.vn/courses/" + course.id, {
-                method: "GET",
-
-            })
-            if (!data.ok) {
-                const errBody = await data.json().catch(() => null);
-                console.log("Chi tiết lỗi từ server:", errBody);
-                throw new Error(errBody?.message || "Server Error");
-            }
-            console.log("data khoa hoc: ", data);
-            const courseData = await data.json();
-                setFormData({
-                title: courseData.title ?? "",
-                category: courseData.category ?? "",
-                level: courseData.level ?? "",
-                price: courseData.price ?? "",
-                status: courseData.status ?? "",
-            });
-
-
-
-
-        }
-        catch (error) {
-            console.error(error);
-
-            setError("Vui lòng thử lại");
-        }
-        finally {
-            setIsSubmitting(false);
-        }
-    }
     function validateForm() {
         let isValid = true;
         if (formData.price < 0) {
@@ -77,7 +41,19 @@ export default function CourseFormEdit({ course, onClose }) {
 
     }
     useEffect(() => {
-        fetchCourseId();
+        async function loadCourse() {
+            const data = await fetchCourseId(course.id);
+            if (data) {
+                setFormData({
+                    title: data.title ?? "",
+                    category: data.category ?? "",
+                    level: data.level ?? "",
+                    price: data.price ?? "",
+                    status: data.status ?? "",
+                });
+            }
+        }
+        loadCourse();
 
     }, [course.id])
     // put
@@ -85,41 +61,15 @@ export default function CourseFormEdit({ course, onClose }) {
     async function handleEdit() {
         if (!validateForm()) return; // dừng lại nếu có lỗi
         console.log("Dữ liệu hợp lệ, gửi lên API:", formData);
-        try {
-            setIsSubmitting(true);
-            setSaving(true);
 
-            const data = await fetch("https://course365-api.onschoolbootcamp.edu.vn/courses/" + course.id, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
-            })
-            if (!data.ok) {
-                const errBody = await data.json().catch(() => null);
-                console.log("Chi tiết lỗi từ server:", errBody);
-                throw new Error(errBody?.message || "Server Error");
-            }
-            console.log("đã lưu: ", data);
-            const courseEdit = await data.json();
-            
-            onClose();
-
-
-        }
-        catch (error) {
-            console.log(error);
-
-            setError("chưa lưu được");
-        }
-        finally {
-            setSaving(false);
-            setIsSubmitting(false);
+        const result = await edit(course.id, formData);
+        if (result.success) {
+            onClose();   // đóng modal ở component, không phải trong hook
         }
     }
     return (
 
         <div style={{ height: '40em' }}>
-            <div>I'm a modal dialog</div>
             <button onClick={onClose}>Close</button>
 
             {loading && <p>{loading}</p>}

@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Toaster } from 'react-hot-toast';
 export default function App({ children }) {
   return (
-    <div>
+    <div style={{padding:'1em'}}>
       <Layout>
         <CourseListPage />
       </Layout>

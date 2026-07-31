@@ -12,8 +12,10 @@ export default function Header() {
             </div>
 
 
-           
-            <img style={{ width: '5em', height: '5em', borderRadius: '3em' }} src={user} alt="user" />
+           <div style={{display:'flex', alignItems:'center'}}>
+                <img style={{ width: '3em', height: '3em', borderRadius: '3em' }} src={user} alt="user" />
+                <p>User</p>            
+           </div>
 
 
 
