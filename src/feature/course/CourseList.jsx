@@ -1,6 +1,6 @@
 import CourseCard from "./CourseCard"
-export default function CourseList({course}) {
+export default function CourseList({ course, handleCourseUpdated}) {
     return (
-        <CourseCard course={course} />
-    )
+       <CourseCard course={course}  />
+        )
 }
