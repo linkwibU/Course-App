@@ -1,18 +1,26 @@
-# React + Vite
+# Course365 v1.0 – Course Management Dashboard
+dashboard quản lý khoá học có các tính năng : CRUD, search/filter, UI theo Design
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+![giao diện danh sách](src/assets/giao-dien1.PNG)
+![giao form](src/assets/giao-dien2.PNG)
 
-Currently, two official plugins are available:
+## Features
+- Content.jsx
+- Header.jsx
+- Sidebar.jsx
+- CourseCard.jsx
+- CourseList.jsx
+- CourseListPage.jsx
+- CourseFormCreate.jsx
+- CourseFormEdit.jsx
+- DashboardLayout.jsx
+## Tech stack
+-  [React](https://react.dev/) - UI library
+- [Fetch api](https://course365-api.onschoolbootcamp.edu.vn/courses) link fetch khoá học
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Run locally
+- npm run dev
+- npm run build
 
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Live Demo 
+(https://6a6c535b90bd4713f42d375f--dazzling-capybara-024b30.netlify.app/)
