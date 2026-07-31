@@ -13,16 +13,38 @@ export default function CourseListPage() {
     const [totalCourses, setTotal] = useState();
     const [active, setActive] = useState("Active");
     const [draft, setDraft] = useState("Draft");
+    const [isAutoRefresh, setisAutoRefresh] = useState(false);
+
 
     useEffect(() => {
-        if(searchText){
+        if (searchText) {
             document.title = `${searchText}`;
         }
-        else{
+        else {
             document.title = `Course365`;
         }
-        
+
     }, [searchText]);
+    useEffect(() => {
+        fetchCourse();
+        console.log("component mount");
+    }, []);
+    useEffect(() => {
+        if (isAutoRefresh === false) {
+            return;
+        }
+        else if (isAutoRefresh === true) {
+            const interval = setInterval(() => {
+                fetchCourse();
+                console.log("Auto refresh at", new Date());
+            }, 3000);
+            return () => {
+                clearInterval(interval);
+                console.log('đã xoá');
+            };
+            
+        }
+    }, [isAutoRefresh]);
     const courseFilter = course.filter((c) => {
         const matchSearch = c.title?.toLowerCase().includes(searchText.toLocaleLowerCase());
         const matchCategory = filterCategory === "All Category" || c.category === filterCategory;
@@ -91,9 +113,7 @@ export default function CourseListPage() {
         }
 
     }
-    useEffect(() => {
-        fetchCourse();
-    }, [])
+
     return (
         <div>
             <div style={{ display: 'flex', justifyContent: "space-between", alignItems: 'baseline' }}>
@@ -105,7 +125,14 @@ export default function CourseListPage() {
                         onChange={(e) => setSearchText(e.target.value)}
                     />
                 </div>
-
+                <div>
+                    <label>Auto refresh</label>
+                    <input
+                        type="checkbox"
+                        checked={isAutoRefresh}
+                        onChange={(e) => setisAutoRefresh(e.target.checked)}
+                    />
+                </div>
 
                 <select onChange={(e) => { setFilterCategory(e.target.value) }}>
                     {categories.map((c, i) => (
