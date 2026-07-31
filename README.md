@@ -21,3 +21,6 @@ dashboard quản lý khoá học có các tính năng : CRUD, search/filter, UI 
 ## Run locally
 - npm run dev
 - npm run build
+
+## Live Demo 
+(https://6a6c535b90bd4713f42d375f--dazzling-capybara-024b30.netlify.app/)
