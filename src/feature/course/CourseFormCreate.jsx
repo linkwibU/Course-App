@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import useCourse from "../../hooks/useCourse";
 export default function CourseFormCreate() {
     const [formData, setFormData] = useState({
         title: "",
@@ -8,19 +8,65 @@ export default function CourseFormCreate() {
         price: '',
         status: ""
     })
+    const {createCourse, isSubmitting} = useCourse()
     const [errorName, setErrorName] = useState(null);
     const [errorPrice, setErrorPrice] = useState(null);
     const [error, setError] = useState(null);
+    // const [isSubmitting, setIsSubmitting] = useState(false);
     function handleChange(field, value) {
         setFormData(prev => ({
             ...prev, [field]: value
         }))
     }
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault(); // tránh reload trang
         if (!validateForm()) return; // dừng lại nếu có lỗi
-
         console.log("Dữ liệu hợp lệ, gửi lên API:", formData);
+
+        // try {
+        //     setIsSubmitting(true);
+        //     const data = await fetch("https://course365-api.onschoolbootcamp.edu.vn/courses", {
+        //         method: "POST",
+
+        //         headers: {
+
+        //             "Content-Type": "application/json"
+
+        //         },
+        //         body: JSON.stringify(formData)
+        //     })
+        //     if (!data.ok) {
+        //         const errBody = await data.json().catch(() => null);
+        //         console.log("Chi tiết lỗi từ server:", errBody);
+        //         throw new Error(errBody?.message || "Server Error");
+        //     }
+        //     console.log("data khoa hoc: ", data);
+        //     const courseData = await data.json();
+        //     handleCourseCreated(courseData);
+        //     setFormData({
+        //         title: "",
+        //         category: "",
+        //         level: "",
+        //         price: '',
+        //         status: ""
+        //     });
+
+        // }
+        // catch (err) {
+        //     console.error(err.message);
+
+        //     setError("Vui lòng thử lại");
+        // }
+        // finally{
+        //     setIsSubmitting(false);
+        // }
+        const result = await createCourse(formData);
+        if (result.success) {
+            setFormData({ title: "", category: "", level: "", price: '', status: "" });
+        } else {
+            setError(result.error);
+            
+        }
     }
     function validateForm() {
         let isValid = true;
@@ -28,18 +74,20 @@ export default function CourseFormCreate() {
             setErrorPrice("giá tiền không hợp lệ");
             isValid = false;
         }
-        else if(!formData.price){
-             setErrorPrice("vui lòng điền giá tiền");
-            isValid = false;           
+        else if (!formData.price) {
+            setErrorPrice("vui lòng điền giá tiền");
+            isValid = false;
         }
         if (!formData.title.trim()) {
             setErrorName("vui lòng điền tên");
             isValid = false;
         }
         return isValid;
+
     }
     return (
         <section style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {error && <p>{error}</p>}
             <h1
                 style={{ fontSize: '2rem' }}
             >Add NewCourse</h1>
@@ -57,7 +105,7 @@ export default function CourseFormCreate() {
                     setErrorName("");
                 }}
             />
-            {errorName && <div style={{color:'red'}}>{errorName}</div>}
+            {errorName && <div style={{ color: 'red' }}>{errorName}</div>}
             <label
                 style={{ width: '30em' }}
             >Category</label>
@@ -70,6 +118,7 @@ export default function CourseFormCreate() {
                     { }
                 }}
             >
+                <option value="">chọn category</option>
                 <option value="frontend">Frontend</option>
                 <option value="backend">Backend</option>
             </select>
@@ -85,6 +134,7 @@ export default function CourseFormCreate() {
                     handleChange("level", e.target.value);
                 }}
             >
+                <option value="all">Chọn level</option>
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
                 <option value="advanced">Advanced</option>
@@ -99,11 +149,11 @@ export default function CourseFormCreate() {
                 type="number"
                 value={formData.price}
                 onChange={(e) => {
-                    handleChange("price", e.target.value);
+                    handleChange("price", Number(e.target.value));
                     setErrorPrice("");
                 }}
             />
-            {errorPrice && <div style={{color:'red'}}>{errorPrice}</div>}
+            {errorPrice && <div style={{ color: 'red' }}>{errorPrice}</div>}
             <label
                 style={{ width: '30em' }}
             >Status</label>
@@ -115,11 +165,14 @@ export default function CourseFormCreate() {
                     handleChange("status", e.target.value);
                 }}
             >
-                <option value="active">Active</option>
+                <option value="">chọn trạng thái</option>
+                <option value="published">Publish</option>
                 <option value="draft">Draft</option>
             </select>
             <div style={{ display: 'flex', gap: '1em' }}>
-                <button type="submit" onClick={handleSubmit}>Save</button>
+                <button type="submit" disabled={isSubmitting} onClick={handleSubmit}>
+                    {isSubmitting ? "Saving..." : "Save"}
+                </button>
                 <button>Cancel</button>
             </div>
 
