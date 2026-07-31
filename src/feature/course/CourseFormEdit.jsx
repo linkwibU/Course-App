@@ -70,7 +70,6 @@ export default function CourseFormEdit({ course, onClose }) {
     return (
 
         <div style={{ height: '40em' }}>
-            <div>I'm a modal dialog</div>
             <button onClick={onClose}>Close</button>
 
             {loading && <p>{loading}</p>}
