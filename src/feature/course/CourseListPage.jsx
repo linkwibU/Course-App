@@ -8,11 +8,7 @@ export default function CourseListPage() {
     function handleCourseCreated(newCourse) {
         setCourse(prev => [newCourse, ...prev]);
     }
-    function handleCourseUpdated(updatedCourse) {
-        setCourse(prev =>
-            prev.map(c => (c.id === updatedCourse.id ? updatedCourse : c))
-        );
-    }
+
     function dieuKien() {
         if (loading) {
             return <p>Đang load...</p>
