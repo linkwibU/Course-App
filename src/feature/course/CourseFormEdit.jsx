@@ -56,7 +56,7 @@ export default function CourseFormEdit({ course, onClose }) {
         loadCourse();
 
     }, [course.id])
-    // put
+
 
     async function handleEdit() {
         if (!validateForm()) return; // dừng lại nếu có lỗi

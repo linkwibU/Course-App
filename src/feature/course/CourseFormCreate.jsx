@@ -8,7 +8,7 @@ export default function CourseFormCreate() {
         price: '',
         status: ""
     })
-    const {createCourse, isSubmitting} = useCourse()
+    const { createCourse, isSubmitting } = useCourse()
     const [errorName, setErrorName] = useState(null);
     const [errorPrice, setErrorPrice] = useState(null);
     const [error, setError] = useState(null);
@@ -23,49 +23,13 @@ export default function CourseFormCreate() {
         if (!validateForm()) return; // dừng lại nếu có lỗi
         console.log("Dữ liệu hợp lệ, gửi lên API:", formData);
 
-        // try {
-        //     setIsSubmitting(true);
-        //     const data = await fetch("https://course365-api.onschoolbootcamp.edu.vn/courses", {
-        //         method: "POST",
 
-        //         headers: {
-
-        //             "Content-Type": "application/json"
-
-        //         },
-        //         body: JSON.stringify(formData)
-        //     })
-        //     if (!data.ok) {
-        //         const errBody = await data.json().catch(() => null);
-        //         console.log("Chi tiết lỗi từ server:", errBody);
-        //         throw new Error(errBody?.message || "Server Error");
-        //     }
-        //     console.log("data khoa hoc: ", data);
-        //     const courseData = await data.json();
-        //     handleCourseCreated(courseData);
-        //     setFormData({
-        //         title: "",
-        //         category: "",
-        //         level: "",
-        //         price: '',
-        //         status: ""
-        //     });
-
-        // }
-        // catch (err) {
-        //     console.error(err.message);
-
-        //     setError("Vui lòng thử lại");
-        // }
-        // finally{
-        //     setIsSubmitting(false);
-        // }
         const result = await createCourse(formData);
         if (result.success) {
             setFormData({ title: "", category: "", level: "", price: '', status: "" });
         } else {
             setError(result.error);
-            
+
         }
     }
     function validateForm() {
