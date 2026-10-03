@@ -28,4 +28,4 @@ dashboard quản lý khoá học có các tính năng : CRUD, search/filter, UI 
 ## Github Profile
 [profile](https://github.com/linkwibU)
 ## My CV
-[CV](https://docs.google.com/document/d/1oApPm8PB1cXvrzrWW3WO-BduRvAYdfPtEDEHjnZtxlM/edit?usp=sharing)
+[CV](https://github.com/user-attachments/files/32990730/my.cv.pdf)
